@@ -3,32 +3,24 @@ import { useState } from "react";
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
 
-    function register(ev) {
+    async function register(ev) {
         ev.preventDefault();
 
-        fetch('http://localhost:3000/register', {
+        const response = await fetch('http://localhost:3000/register', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Registration failed');
-                }
-            })
-            .then(data => {
-
-                setMessage(data);
-            })
-            .catch(error => {
-
-                setMessage('Registration failed');
-                console.error('Registration error:', error);
-            });
+        });
+        if (response.status === 201) {
+            alert('Registration Successfull')
+            setUsername('');
+            setPassword('');
+        } else {
+            alert('Registration Failed')
+            setUsername('');
+            setPassword('');
+        }
     }
 
     return (
@@ -46,7 +38,7 @@ const RegisterPage = () => {
                 onChange={ev => setPassword(ev.target.value)}
             />
             <button type="submit">Register</button>
-            {message && <p>{message}</p>}
+
         </form>
     );
 }
