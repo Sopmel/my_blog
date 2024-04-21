@@ -1,4 +1,9 @@
 const User = require('../models/user.model');
+const bcrypt = require('bcrypt')
+ const jwt = require('jsonwebtoken')
+
+
+const secret = 'jlsjsljäöspkd3ejjlkwe'
 
 async function createUser(req, res) {
     try {
@@ -7,9 +12,11 @@ async function createUser(req, res) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
+       const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = new User({
             "username": username,
-            "password": password
+            "password": hashedPassword
         });
         console.log('newUser: ', newUser);
         const savedUser = new User(newUser)
@@ -33,7 +40,46 @@ async function getUsers(req, res) {
     }
 };
 
+async function loginUser(req, res) {
+    const {username, password} = req.body;
+    const userDoc = await User.findOne({username});
+
+    const passOk = bcrypt.compareSync(password, userDoc.password)
+    if(passOk) {
+        //logged in
+        jwt.sign({username, id:userDoc._id}, secret, {}, (err,token) => {
+            if (err) throw err;
+            res.cookie('token', token).json({ 
+                id:userDoc._id,
+                username,
+            });
+            
+        });
+    } else {
+        res.status(401).json({ message: 'Wrong credentials' })
+        console.log('err')
+    }
+}
+
+async function authenticateUser(req, res) {
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, (err, info) => {
+        if (err) {
+            // Om det uppstår ett fel, skicka en felrespons till klienten
+            return res.status(500).json({ error: 'Authentication failed' });
+        } else {
+            // Om verifieringen lyckas, skicka användarinformationen till klienten
+            //info.token = token;
+            console.log(info);
+            return res.json(info);
+        }
+    });
+}
+
+
 module.exports = {
     createUser,
-    getUsers
+    getUsers,
+    loginUser,
+    authenticateUser
 }

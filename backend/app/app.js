@@ -3,6 +3,9 @@ const cors = require('cors');
 const { urlencoded } = require('express');
 const postsRouter = require('./routes/post.router');
 const userRouter = require('./routes/user.router');
+const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const uploadMiddlewear = multer({ dest: 'uploads/'})
 
 const app = express();
 
@@ -16,10 +19,15 @@ app.use(
 
 app.use(urlencoded({ extended: true }))
 app.use(express.json());
+app.use(cookieParser());
 
-app.use('/posts', postsRouter)
+app.use('/post', uploadMiddlewear.single('file'), postsRouter)
 
 app.post('/register', userRouter);
+
+app.post('/login', userRouter)
+
+app.get('/profile', userRouter)
 
 app.get('/register', (req, res) => res.send('Hello World from /'));
 

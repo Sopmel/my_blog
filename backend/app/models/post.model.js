@@ -6,10 +6,19 @@ const postSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    summary: {
+        type: String,
+        required: true,
+        trim: true
+    },
     content: {
         type: String,
         required: true,
         trim: true
+    },
+    file: {
+        type: Buffer,
+        required: true,
     }
 })
 
