@@ -16,10 +16,12 @@ const postSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    file: {
-        type: Buffer,
+    cover: {
+        type: String,
         required: true,
     }
+}, {
+    timestamps: true 
 })
 
 const Post = mongoose.model('Post', postSchema)

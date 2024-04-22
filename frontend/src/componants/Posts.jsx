@@ -1,4 +1,15 @@
-export default function Post() {
+export default function Post({ post }) {
+    const createdAtDate = new Date(post.createdAt);
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZone: 'Europe/Stockholm'
+    };
+    const formattedDate = createdAtDate.toLocaleDateString('sv-SE', options);
     return (
         <div className="post">
             <div className="image">
@@ -6,13 +17,13 @@ export default function Post() {
             </div>
 
             <div className="texts">
-                <h2>How to start a Blog</h2>
+                <h2>{post.title}</h2>
                 <p className="info">
                     <a className="author">Sophie Melin</a>
-                    <time>2024-04-19 20:55</time>
+                    <time>{formattedDate}</time>
 
                 </p>
-                <p className="summary">Starting a blog can be both a rewarding and lucrative venture that opens exciting opportunities. Through blogging, you can establish yourself as a credible expert in your field, earn a part-time or full-time income and connect with like-minded people who share your interests and passions.</p>
+                <p className="summary">{post.summary}</p>
             </div>
         </div>
     )

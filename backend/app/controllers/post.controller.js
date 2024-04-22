@@ -1,9 +1,15 @@
 const Post = require('../models/post.model');
+const fs = require('fs');
 
 async function createPost(req, res) {
     try {
         const {title, summary, content } = req.body;
         const file = req.file;
+        const {originalname,path} = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path+'.'+ext;
+        fs.renameSync(path, newPath);
 
         if( !title ||!summary || !content || !file ) {
             return res.status(400).json({message: 'Missing required fields'})
@@ -13,7 +19,7 @@ async function createPost(req, res) {
             "title": title,
             "summary": summary,
             "content": content,
-            "file": file.path
+            "cover": newPath
         });
         console.log('newPost: ', newPost);
         const savedPost = new Post(newPost)
