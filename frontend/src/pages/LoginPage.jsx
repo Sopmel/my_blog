@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Navigate } from "react-router-dom"
-import { useContext } from "react";
 import { UserContext } from "../UserContext";
 
 
@@ -26,7 +25,7 @@ const LoginPage = () => {
                 setRederect(true);
             })
         } else {
-            alert('wrong criedentials')
+            alert('login failed')
         }
     }
 
