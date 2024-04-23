@@ -1,9 +1,9 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt')
- const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken'); // Glöm inte att importera jwt här också
 
+const secret = 'jlsjsljäöspkd3ejjlkwe';
 
-const secret = 'jlsjsljäöspkd3ejjlkwe'
 
 async function createUser(req, res) {
     try {
@@ -61,25 +61,9 @@ async function loginUser(req, res) {
     }
 }
 
-async function authenticateUser(req, res) {
-    const { token } = req.cookies;
-    jwt.verify(token, secret, {}, (err, info) => {
-        if (err) {
-            // Om det uppstår ett fel, skicka en felrespons till klienten
-            return res.status(500).json({ error: 'Authentication failed' });
-        } else {
-            // Om verifieringen lyckas, skicka användarinformationen till klienten
-            //info.token = token;
-            console.log(info);
-            return res.json(info);
-        }
-    });
-}
-
 
 module.exports = {
     createUser,
     getUsers,
-    loginUser,
-    authenticateUser
+    loginUser
 }

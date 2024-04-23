@@ -5,6 +5,7 @@ const postsRouter = require('./routes/post.router');
 const userRouter = require('./routes/user.router');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
+const { checkUser } = require('./middlewares/auth.middleware');
 const uploadMiddlewear = multer({ dest: 'uploads/'})
 
 const app = express();
@@ -23,13 +24,17 @@ app.use(cookieParser());
 
 app.use('/post', uploadMiddlewear.single('file'), postsRouter)
 
-app.post('/register', userRouter);
+// app.post('/register', userRouter);
 
-app.post('/login', userRouter)
+// app.post('/login', userRouter)
 
-app.get('/profile', userRouter)
+// app.get('/profile', userRouter)
 
-app.get('/register', (req, res) => res.send('Hello World from /'));
+app.use(userRouter);
+
+//app.get('*', checkUser)
+
+//app.get('/register', (req, res) => res.send('Hello World from /'));
 
 
 

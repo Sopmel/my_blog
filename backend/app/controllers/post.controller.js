@@ -1,4 +1,5 @@
 const Post = require('../models/post.model');
+const jwt = require('jsonwebtoken')
 const fs = require('fs');
 
 async function createPost(req, res) {
@@ -15,11 +16,14 @@ async function createPost(req, res) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
+        const authorId = res.locals.user._id;
+
         const newPost = new Post({
             "title": title,
             "summary": summary,
             "content": content,
-            "cover": newPath
+            "cover": newPath,
+            "author": authorId
         });
         console.log('newPost: ', newPost);
         const savedPost = new Post(newPost)

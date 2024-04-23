@@ -1,3 +1,5 @@
+
+
 export default function Post({ post }) {
     const createdAtDate = new Date(post.createdAt);
     const options = {
@@ -19,7 +21,7 @@ export default function Post({ post }) {
             <div className="texts">
                 <h2>{post.title}</h2>
                 <p className="info">
-                    <a className="author">Sophie Melin</a>
+                    <a className="author">Sophie</a>
                     <time>{formattedDate}</time>
 
                 </p>
