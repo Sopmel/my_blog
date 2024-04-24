@@ -16,7 +16,7 @@ async function createPost(req, res) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
-        const authorId = res.locals.user._id;
+        const authorId = res.locals.user.id;
 
         const newPost = new Post({
             "title": title,
@@ -39,11 +39,15 @@ async function createPost(req, res) {
 async function getPosts(req, res) {
     try {
         const posts = await Post.find()
-        res.status(200).send(posts)
+        .populate('author', ['username'])
+        .sort({ createdAt: -1 })
+        .limit(20);
+
+        res.status(201).json(posts)
         console.log('Posts: ', posts);
     } catch (error) {
         console.log('Error fetching Posts ', error);
-        res.status(400).json({message: 'Error fetching Posts'})
+        res.status(500).json({message: 'Error fetching Posts'})
     }
 };
 

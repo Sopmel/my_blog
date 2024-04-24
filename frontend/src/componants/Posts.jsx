@@ -12,6 +12,8 @@ export default function Post({ post }) {
         timeZone: 'Europe/Stockholm'
     };
     const formattedDate = createdAtDate.toLocaleDateString('sv-SE', options);
+
+    const author = post.author ? post.author.username : 'Unknown Author';
     return (
         <div className="post">
             <div className="image">
@@ -21,7 +23,7 @@ export default function Post({ post }) {
             <div className="texts">
                 <h2>{post.title}</h2>
                 <p className="info">
-                    <a className="author">Sophie</a>
+                    <a className="author">{author}</a>
                     <time>{formattedDate}</time>
 
                 </p>
