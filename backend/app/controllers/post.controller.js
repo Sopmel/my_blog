@@ -43,11 +43,18 @@ async function getPosts(req, res) {
         .sort({ createdAt: -1 })
         .limit(20);
 
-        res.status(201).json(posts)
-        console.log('Posts: ', posts);
+        // Konvertera bilderna till data-URI
+        const postsWithImageDataURI = posts.map(post => {
+            const imageData = fs.readFileSync(post.cover);
+            const imageBase64 = Buffer.from(imageData).toString('base64');
+            const dataURI = `data:image/jpeg;base64,${imageBase64}`;
+            return { ...post.toObject(), cover: dataURI };
+        });
+
+        res.status(200).json(postsWithImageDataURI);
     } catch (error) {
         console.log('Error fetching Posts ', error);
-        res.status(500).json({message: 'Error fetching Posts'})
+        res.status(500).json({ message: 'Error fetching Posts' });
     }
 };
 

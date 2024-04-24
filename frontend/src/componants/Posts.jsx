@@ -1,4 +1,4 @@
-
+import React from "react";
 
 export default function Post({ post }) {
     const createdAtDate = new Date(post.createdAt);
@@ -17,18 +17,16 @@ export default function Post({ post }) {
     return (
         <div className="post">
             <div className="image">
-                <img src="https://media.istockphoto.com/photos/retro-blog-bookshelf-with-cozy-interior-picture-id1146554418?b=1&k=20&m=1146554418&s=170667a&w=0&h=OKcK6RlNkwYU4y1xba-hEcXM3IA7itp2pYKDGDT6KAI=" />
+                <img src={post.cover} alt="Cover" />
             </div>
-
             <div className="texts">
                 <h2>{post.title}</h2>
                 <p className="info">
                     <a className="author">{author}</a>
                     <time>{formattedDate}</time>
-
                 </p>
                 <p className="summary">{post.summary}</p>
             </div>
         </div>
-    )
+    );
 }
