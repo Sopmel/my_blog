@@ -1,6 +1,7 @@
 const Post = require('../models/post.model');
 const jwt = require('jsonwebtoken')
 const fs = require('fs');
+const sanitizeHtml = require('sanitize-html')
 
 async function createPost(req, res) {
     try {
@@ -18,10 +19,15 @@ async function createPost(req, res) {
 
         const authorId = res.locals.user.id;
 
+        const cleanContent = sanitizeHtml(content, {
+            allowedTags: [], 
+            allowedAttributes: {} 
+        });
+
         const newPost = new Post({
             "title": title,
             "summary": summary,
-            "content": content,
+            "content": cleanContent,
             "cover": newPath,
             "author": authorId
         });
@@ -58,7 +64,32 @@ async function getPosts(req, res) {
     }
 };
 
+async function showPost(req, res) {
+    const { id } = req.params;
+
+    try {
+        const postDoc = await Post.findById(id).populate('author');
+        
+        if (!postDoc) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        const imageData = fs.readFileSync(postDoc.cover);
+        const imageBase64 = Buffer.from(imageData).toString('base64');
+        const dataURI = `data:image/jpeg;base64,${imageBase64}`;
+
+        const postWithImageDataURI = { ...postDoc.toObject(), cover: dataURI };
+
+        res.status(200).json(postWithImageDataURI);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
 module.exports = {
     createPost,
-    getPosts
+    getPosts,
+    showPost
 }

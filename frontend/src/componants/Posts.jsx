@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export default function Post({ post }) {
+export default function Post({ _id, post }) {
     const createdAtDate = new Date(post.createdAt);
     const options = {
         year: 'numeric',
@@ -17,10 +18,14 @@ export default function Post({ post }) {
     return (
         <div className="post">
             <div className="image">
-                <img src={post.cover} alt="Cover" />
+                <Link to={`/post/${_id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                    <img src={post.cover} alt="Cover" />
+                </Link>
             </div>
             <div className="texts">
-                <h2>{post.title}</h2>
+                <Link to={`/post/${_id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                    <h2>{post.title}</h2>
+                </Link>
                 <p className="info">
                     <a className="author">{author}</a>
                     <time>{formattedDate}</time>

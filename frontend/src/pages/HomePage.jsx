@@ -16,7 +16,7 @@ const HomePage = () => {
 
         <>
             {posts.length > 0 && posts.map(post => (
-                <Post key={post._id} post={post} />
+                <Post key={post._id} _id={post._id} post={post} />
             ))}
         </>
 

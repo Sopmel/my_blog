@@ -24,18 +24,8 @@ app.use(cookieParser());
 
 app.use('/post', uploadMiddlewear.single('file'), postsRouter)
 
-// app.post('/register', userRouter);
-
-// app.post('/login', userRouter)
-
-// app.get('/profile', userRouter)
-
 app.use(userRouter);
 
-//app.get('*', checkUser)
-
-//app.get('/register', (req, res) => res.send('Hello World from /'));
-
-
+app.get('/post/:id', postsRouter)
 
 module.exports = app; 

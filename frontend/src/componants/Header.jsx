@@ -26,7 +26,18 @@ export default function Header() {
 
     return (
         <header>
-            <Link to="/" className="logo">MyBlog</Link>
+            <div className="header-content">
+                <div className="user-info">
+                    {username && (
+                        <div className="username">{username}'s</div>
+                    )}
+                </div>
+                <div className="logo-container">
+                    <Link to="/" className="logo">
+                        BlogSpot
+                    </Link>
+                </div>
+            </div>
 
             <nav>
                 {username && (
