@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Editor from "../Editor";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, Link } from "react-router-dom";
 
 export default function EditPost() {
     const { id } = useParams();
@@ -53,25 +53,36 @@ export default function EditPost() {
     }
 
     return (
-        <form onSubmit={updatePost}>
-            <input type="title"
-                placeholder={'Title'}
-                value={title}
-                onChange={ev => setTitle(ev.target.value)} />
+        <>
+            <Link to={'/post/' + id}>
+                <button className="back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    </svg>
 
-            <input type="summary"
-                placeholder={'Summary'}
-                value={summary}
-                onChange={ev => setSummary(ev.target.value)} />
+                </button>
+            </Link>
+            <form onSubmit={updatePost}>
+                <input type="title"
+                    placeholder={'Title'}
+                    value={title}
+                    onChange={ev => setTitle(ev.target.value)} />
 
-            <input type="file"
-                onChange={ev => setFiles(ev.target.files)} />
-            <Editor
-                value={content}
-                onChange={setContent}
-            />
+                <input type="summary"
+                    placeholder={'Summary'}
+                    value={summary}
+                    onChange={ev => setSummary(ev.target.value)} />
 
-            <button style={{ marginTop: '5px' }}>Update post</button>
-        </form>
+                <input type="file"
+                    onChange={ev => setFiles(ev.target.files)} />
+                <Editor
+                    value={content}
+                    onChange={setContent}
+                />
+
+                <button style={{ marginTop: '5px' }}>Update post</button>
+            </form>
+
+        </>
     );
 }

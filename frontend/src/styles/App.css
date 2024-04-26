@@ -40,3 +40,16 @@ form.login h1,
 form.register h1 {
   text-align: center;
 }
+
+.back-btn {
+  width: 50px;
+  background-color: white;
+  color: black;
+  margin-bottom: 20px;
+  cursor: pointer;
+
+}
+
+.back-btn svg {
+  width: 20px;
+}

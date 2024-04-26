@@ -7,7 +7,7 @@ const secret = 'jlsjsljäöspkd3ejjlkwe';
 
 async function createUser(req, res) {
     try {
-        const {username, password } = req.body;
+        const {username, password, isAdmin } = req.body;
         if( !username || !password ) {
             return res.status(400).json({message: 'Missing required fields'})
         }
@@ -16,7 +16,8 @@ async function createUser(req, res) {
 
         const newUser = new User({
             "username": username,
-            "password": hashedPassword
+            "password": hashedPassword,
+            "isAdmin": isAdmin || false,
         });
         console.log('newUser: ', newUser);
         const savedUser = new User(newUser)
@@ -41,25 +42,43 @@ async function getUsers(req, res) {
 };
 
 async function loginUser(req, res) {
-    const {username, password} = req.body;
-    const userDoc = await User.findOne({username});
+    const { username, password } = req.body;
+    try {
+        const userDoc = await User.findOne({ username });
 
-    const passOk = bcrypt.compareSync(password, userDoc.password)
-    if(passOk) {
-        //logged in
-        jwt.sign({username, id:userDoc._id}, secret, {}, (err,token) => {
-            if (err) throw err;
-            res.cookie('token', token).json({ 
-                id:userDoc._id,
+        if (!userDoc) {
+            return res.status(401).json({ message: 'Wrong credentials' });
+        }
+
+        const passOk = bcrypt.compareSync(password, userDoc.password);
+        if (!passOk) {
+            return res.status(401).json({ message: 'Wrong credentials' });
+        }
+
+        // Om användaren är en administratör
+        let isAdmin = false;
+        if (userDoc.isAdmin) {
+            isAdmin = true;
+        }
+
+        // Generera JWT-token
+        jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+            if (err) {
+                console.error('Error generating token:', err);
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+            res.cookie('token', token).json({
+                id: userDoc._id,
                 username,
+                isAdmin: isAdmin // Skicka med isAdmin
             });
-            
         });
-    } else {
-        res.status(401).json({ message: 'Wrong credentials' })
-        console.log('err')
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 
 module.exports = {

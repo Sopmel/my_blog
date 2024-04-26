@@ -29,5 +29,6 @@ app.use(userRouter);
 
 app.get('/post/:id', postsRouter)
 app.put('/post/:id', postsRouter);
+app.delete('/post/:id', postsRouter)
 
 module.exports = app; 

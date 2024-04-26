@@ -24,6 +24,12 @@ export default function CreatePost() {
         });
         if (response.ok) {
             setRedirect(true);
+        } else if (response.status === 400) {
+            // Om statuskoden är 400 (Bad Request)
+            alert('Missing fields');
+        } else {
+            // Hantera andra felstatuskoder här
+            console.error('Server error:', response.status);
         }
     }
 
