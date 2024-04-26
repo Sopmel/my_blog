@@ -1,7 +1,6 @@
 const Post = require('../models/post.model');
 const jwt = require('jsonwebtoken')
 const fs = require('fs');
-const sanitizeHtml = require('sanitize-html')
 
 async function createPost(req, res) {
     try {
@@ -19,15 +18,10 @@ async function createPost(req, res) {
 
         const authorId = res.locals.user.id;
 
-        const cleanContent = sanitizeHtml(content, {
-            allowedTags: [], 
-            allowedAttributes: {} 
-        });
-
         const newPost = new Post({
             "title": title,
             "summary": summary,
-            "content": cleanContent,
+            "content": content,
             "cover": newPath,
             "author": authorId
         });
@@ -87,9 +81,40 @@ async function showPost(req, res) {
     }
 }
 
+async function EditPost(req, res) {
+    let newPath = null;
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+    if (req.file) {
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+    }
+    const { id, title, summary, content } = req.body;
+    const postDoc = await Post.findById(id);
+    console.log('Author ID:', postDoc.author);
+    console.log('Logged in user ID:', res.locals.user.id);
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(res.locals.user.id);
+    if (!isAuthor) {
+        return res.status(400).json('not the Author');
+    }
+    await postDoc.updateOne({
+        title,
+        summary,
+        content,
+        cover: newPath ? newPath : postDoc.cover,
+    });
+    console.log('udpost', postDoc)
+    res.json(postDoc);
+    
+}
+
 
 module.exports = {
     createPost,
     getPosts,
-    showPost
+    showPost,
+    EditPost
 }

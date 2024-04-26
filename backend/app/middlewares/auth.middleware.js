@@ -29,7 +29,7 @@ const checkUser = async (req, res, next) => {
                 res.locals.user = null;
                 next();
             } else {
-                console.log('Decoded token:', decodedToken);
+               // console.log('Decoded token:', decodedToken);
                 try {
                     const user = await User.findById(decodedToken.id);
                     res.locals.user = user;
