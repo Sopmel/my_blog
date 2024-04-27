@@ -47,3 +47,7 @@ header nav {
     text-decoration: none;
     color: black;
 }
+
+.logout-btn {
+    cursor: pointer;
+}

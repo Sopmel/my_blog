@@ -4,6 +4,7 @@ import { UserContext } from "../UserContext";
 
 export default function Header() {
     const { setUserInfo, userInfo } = useContext(UserContext);
+
     useEffect(() => {
         fetch('http://localhost:3000/profile', {
             credentials: 'include',
@@ -14,15 +15,22 @@ export default function Header() {
         })
     }, []);
 
-    function logout() {
-        fetch('http://localhost:3000/logout', {
-            credentials: 'include',
-            method: 'POST',
-        });
-        setUserInfo(null);
+    async function logout() {
+        try {
+            await fetch('http://localhost:3000/logout', {
+                credentials: 'include',
+                method: 'POST',
+            });
+            setUserInfo({});
+            window.location.href = "/"
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     }
 
+
     const username = userInfo?.username;
+
 
     return (
         <header>
@@ -40,10 +48,17 @@ export default function Header() {
             </div>
 
             <nav>
+                {userInfo.isAdmin && (
+                    <Link to='/create'>admin</Link>
+                )}
+
                 {username && (
                     <>
+                        <Link to="/userprofile">Profile</Link>
                         <Link to="/create">Create new post</Link>
-                        <a onClick={logout}>Logout</a>
+                        <a className="logout-btn" onClick={() => {
+                            logout();
+                        }}>Logout</a>
                     </>
                 )}
                 {!username && (

@@ -62,7 +62,7 @@ async function loginUser(req, res) {
         }
 
         // Generera JWT-token
-        jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+        jwt.sign({ username, id: userDoc._id, isAdmin: userDoc.isAdmin }, secret, {}, (err, token) => {
             if (err) {
                 console.error('Error generating token:', err);
                 return res.status(500).json({ message: 'Internal server error' });
@@ -79,10 +79,51 @@ async function loginUser(req, res) {
     }
 }
 
+async function logoutUser(req, res) {
+    try {
+        // Rensa token från klientens cookie
+        res.clearCookie('token');
+        // Skicka ett bekräftelsemeddelande till klienten
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.error('Error during logout:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+async function updateUserProfile(req, res) {
+    try {
+        const userId = req.user.id; // Assuming you have middleware to extract user ID from JWT
+        const { imageUrl, description } = req.body;
+
+        // Check if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update user profile data
+        user.imageUrl = imageUrl || user.imageUrl;
+        user.description = description || user.description;
+
+        // Save the updated user profile
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+
 
 
 module.exports = {
     createUser,
     getUsers,
-    loginUser
+    loginUser,
+    logoutUser,
+    updateUserProfile
 }
