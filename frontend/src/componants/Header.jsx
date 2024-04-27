@@ -54,7 +54,7 @@ export default function Header() {
 
                 {username && (
                     <>
-                        <Link to="/userprofile">Profile</Link>
+                        <Link to={`/profilepage/${userInfo.id}`}>Profile</Link>
                         <Link to="/create">Create new post</Link>
                         <a className="logout-btn" onClick={() => {
                             logout();

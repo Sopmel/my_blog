@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken'); // Glöm inte att importera jwt här också
+const jwt = require('jsonwebtoken'); 
+const Post = require('../models/post.model');
 
 const secret = 'jlsjsljäöspkd3ejjlkwe';
 
@@ -91,33 +92,26 @@ async function logoutUser(req, res) {
     }
 }
 
-async function updateUserProfile(req, res) {
+async function getUserProfile(req, res) {
     try {
-        const userId = req.user.id; // Assuming you have middleware to extract user ID from JWT
-        const { imageUrl, description } = req.body;
-
-        // Check if the user exists
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update user profile data
-        user.imageUrl = imageUrl || user.imageUrl;
-        user.description = description || user.description;
-
-        // Save the updated user profile
-        await user.save();
-
-        res.status(200).json(user);
+        const user = await User.findById(req.params.id); 
+        res.json(user); 
     } catch (error) {
-        console.error('Error updating user profile:', error);
+        console.error('Error fetching user profile:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
-
-
+async function getUserPosts(req, res) {
+    const userId = req.params.id;
+    try {
+        const posts = await Post.find({ author: userId }); 
+        res.json(posts); 
+    } catch (error) {
+        console.error('Error fetching user posts:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
 
 
 module.exports = {
@@ -125,5 +119,6 @@ module.exports = {
     getUsers,
     loginUser,
     logoutUser,
-    updateUserProfile
+    getUserProfile,
+    getUserPosts
 }

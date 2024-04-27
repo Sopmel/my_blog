@@ -10,6 +10,7 @@ import './styles/header.css';
 import './styles/PostPage.css';
 import PostPage from './pages/PostPage';
 import EditPost from './pages/EditPost';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/create' element={<CreatePost />} />
           <Route path='/post/:id' element={<PostPage />} />
           <Route path='/edit/:id' element={<EditPost />} />
+          <Route path='/profilepage/:id' element={<ProfilePage />} />
         </Route>
       </Routes>
     </UserContextProvider>

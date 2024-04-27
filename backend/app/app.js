@@ -26,10 +26,11 @@ app.use('/post', uploadMiddleware.single('file'), postsRouter)
 
 
 app.use(userRouter);
+app.use(postsRouter);
 
-app.get('/post/:id', postsRouter)
-app.put('/post/:id', postsRouter);
-app.delete('/post/:id', postsRouter)
-app.post('/logout', postsRouter)
+// app.get('/post/:id', postsRouter)
+// app.put('/post/:id', postsRouter);
+// app.delete('/post/:id', postsRouter)
+// app.post('/logout', postsRouter)
 
 module.exports = app; 
