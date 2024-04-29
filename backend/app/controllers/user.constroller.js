@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken'); 
 const Post = require('../models/post.model');
+const fs = require('fs');
 
 const secret = 'jlsjsljäöspkd3ejjlkwe';
 
@@ -105,8 +106,19 @@ async function getUserProfile(req, res) {
 async function getUserPosts(req, res) {
     const userId = req.params.id;
     try {
-        const posts = await Post.find({ author: userId }); 
-        res.json(posts); 
+        const posts = await Post.find({ author: userId })
+        .sort({ createdAt: -1 })
+        .limit(20);
+
+        // Konvertera bilderna till data-URI
+        const postsWithImageDataURI = posts.map(post => {
+            const imageData = fs.readFileSync(post.cover);
+            const imageBase64 = Buffer.from(imageData).toString('base64');
+            const dataURI = `data:image/jpeg;base64,${imageBase64}`;
+            return { ...post.toObject(), cover: dataURI };
+        });
+        
+        res.json(postsWithImageDataURI); 
     } catch (error) {
         console.error('Error fetching user posts:', error);
         res.status(500).json({ message: 'Internal server error' });

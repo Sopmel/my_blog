@@ -11,5 +11,6 @@ userRouter.get('/profile', authenticateUser, checkUser);
 userRouter.post('/logout', logoutUser);
 userRouter.get('/profilepage/:id', getUserProfile);
 userRouter.get('/posts/user/:id', getUserPosts);
+userRouter.get('/user', getUsers)
 
 module.exports = userRouter;

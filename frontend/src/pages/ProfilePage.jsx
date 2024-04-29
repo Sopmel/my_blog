@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import Post from "../componants/Posts";
+import '../styles/profilepage.css'
 
 export default function ProfilePage() {
     const { id } = useParams();
@@ -39,21 +40,23 @@ export default function ProfilePage() {
             });
     };
 
-
-
-
-
     return (
-        <div>
-            <h1>Profile Page - {profile.username}</h1>
-            <h2>User Info</h2>
-            <p>Username: {profile.username}</p>
-            {/* Visa annan användarinformation här */}
+        <div className="profile-container">
+            <h1>{profile.username}'s Profile</h1>
 
-            <h2>User Posts</h2>
-            {userPosts.map(post => (
-                <Post key={post._id} post={post} />
-            ))}
+            <div className="post-container">
+                <div>
+                    <h3>post from {profile.username}</h3>
+                </div>
+
+                <div className="posts">
+                    {userPosts.map(post => (
+                        <Post key={post._id} _id={post._id} post={post} />
+                    ))}
+
+                </div>
+
+            </div>
         </div>
     )
 }

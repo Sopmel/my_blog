@@ -1,0 +1,18 @@
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.admin-btn {
+    background-color: white;
+    color: black;
+    width: 200px;
+    border: 1px solid black;
+    cursor: pointer;
+    margin-top: 20px;
+}

@@ -11,6 +11,7 @@ import './styles/PostPage.css';
 import PostPage from './pages/PostPage';
 import EditPost from './pages/EditPost';
 import ProfilePage from './pages/ProfilePage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='/post/:id' element={<PostPage />} />
           <Route path='/edit/:id' element={<EditPost />} />
           <Route path='/profilepage/:id' element={<ProfilePage />} />
+          <Route path='/adminpage' element={<AdminPage />} />
         </Route>
       </Routes>
     </UserContextProvider>

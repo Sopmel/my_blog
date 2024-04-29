@@ -49,7 +49,7 @@ export default function Header() {
 
             <nav>
                 {userInfo.isAdmin && (
-                    <Link to='/create'>admin</Link>
+                    <Link to='/adminpage'>admin</Link>
                 )}
 
                 {username && (
