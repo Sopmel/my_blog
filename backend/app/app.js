@@ -6,6 +6,7 @@ const userRouter = require('./routes/user.router');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/'})
+const commentRouter = require('./routes/comment.router'); 
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.use('/post', uploadMiddleware.single('file'), postsRouter)
 
 app.use(userRouter);
 app.use(postsRouter);
+app.use('/comments', commentRouter);
+
 
 // app.get('/post/:id', postsRouter)
 // app.put('/post/:id', postsRouter);
