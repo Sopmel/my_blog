@@ -15,12 +15,16 @@ async function createPost(req, res) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
+        let blurredTitle = title.replace(/\b(ugly|diet)\b/gi, "****");
+        let blurredSummary = summary.replace(/\b(ugly|diet)\b/gi, "****");
+        let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
+
         const authorId = res.locals.user.id;
 
         const newPost = new Post({
-            "title": title,
-            "summary": summary,
-            "content": content,
+            "title": blurredTitle,
+            "summary": blurredSummary,
+            "content": blurredContent,
             "cover": newPath,
             "author": authorId
         });
@@ -82,8 +86,13 @@ async function showPost(req, res) {
 
 async function EditPost(req, res) {
     let newPath = null;
-    console.log('Request body:', req.body);
-    console.log('Request file:', req.file);
+
+    const { id, title, summary, content } = req.body;
+
+    let blurredTitle = title.replace(/\b(ugly|diet)\b/gi, "****");
+    let blurredSummary = summary.replace(/\b(ugly|diet)\b/gi, "****");
+    let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
+
     if (req.file) {
         const { originalname, path } = req.file;
         const parts = originalname.split('.');
@@ -91,18 +100,19 @@ async function EditPost(req, res) {
         newPath = path + '.' + ext;
         fs.renameSync(path, newPath);
     }
-    const { id, title, summary, content } = req.body;
+
     const postDoc = await Post.findById(id);
-    console.log('Author ID:', postDoc.author);
     console.log('Logged in user ID:', res.locals.user.id);
+
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(res.locals.user.id);
     if (!isAuthor) {
         return res.status(400).json('not the Author');
     }
+    
     await postDoc.updateOne({
-        title,
-        summary,
-        content,
+        title: blurredTitle,
+        summary: blurredSummary,
+        content: blurredContent,
         cover: newPath ? newPath : postDoc.cover,
     });
     console.log('udpost', postDoc)
