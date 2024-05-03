@@ -46,16 +46,23 @@ async function getUsers(req, res) {
 async function loginUser(req, res) {
     const { username, password } = req.body;
     try {
+        console.log('Attempting to find user:', username);
         const userDoc = await User.findOne({ username });
 
         if (!userDoc) {
+            console.log('User not found:', username);
             return res.status(401).json({ message: 'Wrong credentials' });
         }
 
+        console.log('User found:', username);
+
         const passOk = bcrypt.compareSync(password, userDoc.password);
         if (!passOk) {
+            console.log('Incorrect password for user:', username);
             return res.status(401).json({ message: 'Wrong credentials' });
         }
+
+        console.log('Password correct for user:', username);
 
         // Om användaren är en administratör
         let isAdmin = false;
@@ -63,12 +70,15 @@ async function loginUser(req, res) {
             isAdmin = true;
         }
 
+        console.log('Generating JWT token for user:', username);
+
         // Generera JWT-token
         jwt.sign({ username, id: userDoc._id, isAdmin: userDoc.isAdmin }, secret, {}, (err, token) => {
             if (err) {
                 console.error('Error generating token:', err);
                 return res.status(500).json({ message: 'Internal server error' });
             }
+            console.log('JWT token generated successfully for user:', username);
             res.cookie('token', token).json({
                 id: userDoc._id,
                 username,
@@ -82,15 +92,24 @@ async function loginUser(req, res) {
 }
 
 async function logoutUser(req, res) {
+    console.log('Starting logout process');
     try {
-        // Rensa token från klientens cookie
-        res.clearCookie('token');
-        // Skicka ett bekräftelsemeddelande till klienten
+        console.log('Attempting to clear token cookie');
+        if (req.cookies && req.cookies.token) {
+            res.clearCookie('token');
+            console.log('Token cookie cleared successfully');
+        } else {
+            console.log('Token cookie does not exist, no need to clear');
+        }
+
+        console.log('Sending logout success response to client');
         res.status(200).json({ message: 'Logout successful' });
+        console.log('Logout success response sent');
     } catch (error) {
-        console.error('Error during logout:', error);
+        console.log('Error during logout:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
+    console.log('Logout process completed');
 }
 
 async function getUserProfile(req, res) {

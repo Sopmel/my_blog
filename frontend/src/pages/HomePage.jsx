@@ -1,17 +1,30 @@
 import { useEffect, useState, useContext } from "react";
 import Post from "../componants/Posts";
-import Header from "../componants/Header";
 import { UserContext } from "../UserContext";
 
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
     const { userInfo } = useContext(UserContext);
+
     useEffect(() => {
-        fetch('http://localhost:3000/post').then(response => {
+        console.log('Fetching posts...');
+        fetch('http://localhost:3000/post', {
+            headers: {
+                'Authorization': `Bearer ${userInfo.token}`,
+            },
+            credentials: 'include',
+        }).then(response => {
+            console.log('Received response:', response);
             response.json().then(posts => {
+                console.log('Received posts:', posts);
                 setPosts(posts);
+            }).catch(error => {
+                console.error('Error parsing JSON:', error);
             });
+        }).catch(error => {
+            console.error('Error fetching posts:', error);
         });
+        console.log('Fetch request sent.');
     }, []);
 
     return (

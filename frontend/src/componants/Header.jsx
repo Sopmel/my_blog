@@ -4,9 +4,10 @@ import { UserContext } from "../UserContext";
 
 export default function Header() {
     const { setUserInfo, userInfo } = useContext(UserContext);
+    console.log("header userinfo:", userInfo)
 
     useEffect(() => {
-        fetch('http://localhost:3000/profile', {
+        fetch('http://localhost:3000/user/profile', {
             credentials: 'include',
         }).then(response => {
             response.json().then(userInfo => {
@@ -17,12 +18,11 @@ export default function Header() {
 
     async function logout() {
         try {
-            await fetch('http://localhost:3000/logout', {
-                credentials: 'include',
+            await fetch('http://localhost:3000/user/logout', {
                 method: 'POST',
             });
             setUserInfo({});
-            window.location.href = "/"
+            window.location.href = "/login"
         } catch (error) {
             console.error('Logout failed:', error);
         }

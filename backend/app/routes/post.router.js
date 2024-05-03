@@ -5,9 +5,9 @@ const { checkUser, authenticateUser } = require('../middlewares/auth.middleware'
 const postsRouter = Router();
 
 postsRouter.post('/', checkUser, createPost);
-postsRouter.get('/', checkUser, getPosts);
-postsRouter.get('/post/:id', showPost);
-postsRouter.put('/post/:id', checkUser, EditPost)
-postsRouter.delete('/post/:id', checkUser, deletePost)
+postsRouter.get('/', getPosts);
+postsRouter.get('/:id', showPost);
+postsRouter.put('/:id', checkUser, EditPost)
+postsRouter.delete('/:id', checkUser, deletePost)
 
 module.exports = postsRouter;

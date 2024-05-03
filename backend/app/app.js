@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { urlencoded } = require('express');
 const postsRouter = require('./routes/post.router');
-const userRouter = require('./routes/user.router');
+const {userRouter, userRouterProtected }= require('./routes/user.router');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/'})
@@ -23,10 +23,14 @@ app.use(urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/comments', authenticateUser, checkUser, commentRouter);
-app.use('/user', authenticateUser, checkUser, userRouter);
+
 
 app.use('/post', uploadMiddleware.single('file'), postsRouter)
+app.use('/user', userRouter);
+app.use('/comments', authenticateUser, checkUser, commentRouter);
+app.use('/user', authenticateUser, checkUser, userRouterProtected);
+
+
  
 
 

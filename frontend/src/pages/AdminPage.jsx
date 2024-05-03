@@ -13,7 +13,7 @@ export default function AdminPage() {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/user');
+            const response = await axios.get('http://localhost:3000/user/userlist');
             setUsers(response.data);
             console.log("res-data:", response.data);
             setShowUsers(false);

@@ -6,7 +6,7 @@ import { UserContext } from "../UserContext";
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [redirect, setRederect] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     const { setUserInfo } = useContext(UserContext);
 
@@ -14,7 +14,7 @@ const LoginPage = () => {
     async function login(ev) {
         ev.preventDefault();
 
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('http://localhost:3000/user/login', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: { 'Content-Type': 'application/json' },
@@ -24,7 +24,7 @@ const LoginPage = () => {
         if (response.ok) {
             response.json().then(userInfo => {
                 setUserInfo(userInfo);
-                setRederect(true);
+                setRedirect(true);
             })
         } else {
             alert('login failed')

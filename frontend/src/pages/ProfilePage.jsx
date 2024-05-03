@@ -19,7 +19,7 @@ export default function ProfilePage() {
     }, [id]);
 
     const fetchUserProfile = () => {
-        axios.get(`http://localhost:3000/profilepage/${id}`)
+        axios.get(`http://localhost:3000/user/profilepage/${id}`)
             .then(response => {
                 setProfile(response.data);
             })
@@ -30,7 +30,7 @@ export default function ProfilePage() {
     };
 
     const fetchUserPosts = () => {
-        axios.get(`http://localhost:3000/posts/user/${id}`)
+        axios.get(`http://localhost:3000/user/posts/${id}`)
             .then(response => {
                 setUserPosts(response.data);
                 console.log(response.data)
