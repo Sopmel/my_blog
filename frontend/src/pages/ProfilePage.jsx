@@ -19,9 +19,10 @@ export default function ProfilePage() {
     }, [id]);
 
     const fetchUserProfile = () => {
-        axios.get(`http://localhost:3000/user/profilepage/${id}`)
+        axios.get(`http://localhost:3000/user/profilepage/${id}`, { withCredentials: true })
             .then(response => {
                 setProfile(response.data);
+                console.log(response.data)
             })
             .catch(error => {
                 console.error('Error fetching user Profile', error);
@@ -30,7 +31,7 @@ export default function ProfilePage() {
     };
 
     const fetchUserPosts = () => {
-        axios.get(`http://localhost:3000/user/posts/${id}`)
+        axios.get(`http://localhost:3000/user/posts/${id}`,)
             .then(response => {
                 setUserPosts(response.data);
                 console.log(response.data)

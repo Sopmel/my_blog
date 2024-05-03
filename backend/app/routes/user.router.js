@@ -9,12 +9,12 @@ userRouter.post('/register', createUser);
 userRouter.get('/', getUsers);
 userRouter.post('/login', loginUser);
 userRouter.get('/userlist', getUsers)
-userRouter.get('/profile',getUserProfile)
+userRouter.get('/profilepage',getUserProfile)
+userRouter.get('/posts/:id', getUserPosts)
 
 //userRouterProtected.get('/profile', getUserProfile);
 userRouterProtected.post('/logout', logoutUser);
-//userRouterProtected.get('/profilepage/:id');
-userRouterProtected.get('/posts/:id', getUserPosts);
+//userRouterProtected.get('/posts/:id', getUserPosts);
 
 
 module.exports ={
