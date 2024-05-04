@@ -18,3 +18,10 @@
 .posts {
     margin-top: 50px;
 }
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    background-color: white;
+    cursor: pointer;
+}

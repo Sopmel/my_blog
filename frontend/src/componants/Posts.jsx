@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { UserContext } from '../UserContext';
 import '../styles/Post.css'
 
-export default function Post({ _id, post, userInfo }) {
+export default function Post({ _id, post }) {
     const [showCommentForm, setShowCommentForm] = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([])
+    const { userInfo } = useContext(UserContext);
     console.log("userInfo från posts", userInfo)
+    console.log("post", post)
+    console.log("post.author", post.author)
+    console.log("_id", _id)
+
+
 
 
 
@@ -24,7 +31,7 @@ export default function Post({ _id, post, userInfo }) {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/comments/posts/${_id}`);
+            const response = await axios.get(`http://localhost:3000/comments/posts/${_id}`, { withCredentials: true });
             setComments(response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -35,7 +42,7 @@ export default function Post({ _id, post, userInfo }) {
         ev.preventDefault();
 
         try {
-            const response = await axios.post(`http://localhost:3000/comments/posts/${_id}`, { content });
+            const response = await axios.post(`http://localhost:3000/comments/posts/${_id}`, { content }, { withCredentials: true });
 
             if (response.status === 201) {
                 setComments(prevComments => [...prevComments, response.data]);
@@ -145,6 +152,7 @@ export default function Post({ _id, post, userInfo }) {
                     <div className="comment" key={index}>
                         <a href="#" >{comment.author.username} </a>
                         <p>{comment.content}</p>
+                        {console.log("comment", comment)}
 
 
                         {(userInfo && (userInfo.id === author.username || userInfo.isAdmin)) && (

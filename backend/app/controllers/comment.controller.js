@@ -3,8 +3,9 @@ const Comment = require('../models/comment.model');
 async function createComment(req, res) {
     try {
         console.log("postId",  req.params.postId)
-        const { content, authorId } = req.body;
+        const { content } = req.body;
         const postId = req.params.postId;
+        const authorId = res.locals.user._id; // Get the author ID from the authenticated user
         console.log("backend", content, postId)
 
         if( !content ) {
@@ -19,13 +20,15 @@ async function createComment(req, res) {
         console.log('newComment: ', newComment);
         const savedComment = await newComment.save();
 
-        await savedComment.save()
         res.status(201).json(savedComment)
     } catch (error) {
         console.log('Error creating Comment ', error);
-        res.status(400).json({message: 'Error in createComment'})
+        // Only send this if a response hasn't been sent yet
+        if (!res.headersSent) {
+            res.status(400).json({message: 'Error in createComment'})
+        }
     }
-};
+}
 
 async function getComments(req, res) {
     try {

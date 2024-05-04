@@ -92,10 +92,11 @@ async function loginUser(req, res) {
 }
 
 async function logoutUser(req, res) {
-    console.log('Starting logout process');
     try {
-        console.log('Attempting to clear token cookie');
+        console.log('Starting logout process');
+
         if (req.cookies && req.cookies.token) {
+            console.log('Attempting to clear token cookie');
             res.clearCookie('token');
             console.log('Token cookie cleared successfully');
         } else {
@@ -107,7 +108,10 @@ async function logoutUser(req, res) {
         console.log('Logout success response sent');
     } catch (error) {
         console.log('Error during logout:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        // Only send this if a response hasn't been sent yet
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
     }
     console.log('Logout process completed');
 }
