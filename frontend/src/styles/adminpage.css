@@ -16,3 +16,31 @@
     cursor: pointer;
     margin-top: 20px;
 }
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    box-shadow: 0px 0px 10px 0px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.username Link {
+    text-decoration: none;
+}
+
+.user-btns {
+    display: flex;
+    gap: 10px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.user-btns button {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    cursor: pointer;
+}

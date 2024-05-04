@@ -148,6 +148,61 @@ async function getUserPosts(req, res) {
     }
 }
 
+async function deleteUser(req, res){
+    const userId = req.params.id;
+
+    try{
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deleteUser) {
+            return res.status(404).json({error: 'User not found'});
+        }
+
+        res.json({ message: 'User deleted Successfully'});
+    } catch (error) {
+        console.error('Error deleting User:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+const upgradeUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.isAdmin = true;
+        await user.save();
+
+        res.json({ message: 'User upgraded to admin' });
+    } catch (error) {
+        console.error('Error upgrading user:', error);
+        res.status(500).json({ message: 'Error upgrading user' });
+    }
+};
+
+const downgradeUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.isAdmin = false;
+        await user.save();
+
+        res.json({ message: 'User downgraded from admin' });
+    } catch (error) {
+        console.error('Error downgrading user:', error);
+        res.status(500).json({ message: 'Error downgrading user' });
+    }
+};
+
 
 module.exports = {
     createUser,
@@ -155,5 +210,8 @@ module.exports = {
     loginUser,
     logoutUser,
     getUserProfile,
-    getUserPosts
+    getUserPosts,
+    deleteUser,
+    upgradeUser,
+    downgradeUser
 }

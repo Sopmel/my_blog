@@ -27,6 +27,40 @@ export default function AdminPage() {
         console.log(showUsers)
     };
 
+
+    const deleteUser = async (userId) => {
+        try {
+            await axios.delete(`http://localhost:3000/user/${userId}`);
+            fetchUsers();
+            alert('User deleted');
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
+    const upgradeUser = async (userId) => {
+        try {
+            console.log('Upgrading user with ID:', userId);
+            await axios.put(`http://localhost:3000/user/upgrade/${userId}`, { isAdmin: true }, { withCredentials: true });
+            fetchUsers();
+            alert('User upgraded to admin');
+        } catch (error) {
+            console.error('Error upgrading user:', error);
+        }
+
+    };
+
+    const downgradeUser = async (userId) => {
+        try {
+            console.log('Downgrading user with ID:', userId);
+            await axios.put(`http://localhost:3000/user/downgrade/${userId}`, { isAdmin: false }, { withCredentials: true });
+            fetchUsers();
+            alert('User downgraded from admin');
+        } catch (error) {
+            console.error('Error downgrading user:', error);
+        }
+    };
+
     return (
         <div className='admin-container'>
             <div>AdminPage</div>
@@ -42,9 +76,16 @@ export default function AdminPage() {
                 <div>
                     {/* Loopa igenom varje användare och rendera en länk för varje användare */}
                     {users.map(user => (
-                        <div key={user._id}>
-                            {/* Använd Link för att länka till användarens profil */}
-                            <Link to={`/profilepage/${user._id}`}>{user.username}</Link>
+                        <div className="user" key={user._id}>
+                            <div className='username'>
+                                <Link to={`/profilepage/${user._id}`}>{user.username}</Link>
+                            </div>
+                            <div className='user-btns'>
+                                <button onClick={() => deleteUser(user._id)}>Delete</button>
+                                <button onClick={() => user.isAdmin ? downgradeUser(user._id) : upgradeUser(user._id)}>
+                                    {user.isAdmin ? 'Remove as Admin' : 'Upgrade to Admin'}
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
