@@ -137,11 +137,59 @@ async function deletePost(req, res){
     }
 }
 
+const likePost = async (req, res) => {
+    console.log('likePost function called');
+    try {
+        const postId = req.params.postId;
+        console.log('postId:', postId);
+
+        const post = await Post.findById(postId);
+        console.log('post:', post);
+
+        if (!post) {
+            console.log('Post not found');
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        post.likes += 1;
+        await post.save();
+        console.log('post after saving:', post);
+
+        res.json({ likeCount: post.likes });
+    } catch (error) {
+        console.error('Error liking post:', error);
+        res.status(500).json({ message: 'Error liking post' });
+    }
+};
+
+const unlikePost = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        if (post.likes > 0) {
+            post.likes -= 1;
+        }
+        await post.save();
+
+        res.json({ likeCount: post.likes });
+    } catch (error) {
+        console.error('Error unliking post:', error);
+        res.status(500).json({ message: 'Error unliking post' });
+    }
+};
+
 
 module.exports = {
     createPost,
     getPosts,
     showPost,
     EditPost,
-    deletePost
+    deletePost,
+    likePost,
+    unlikePost
 }

@@ -21,6 +21,17 @@ div.post {
 
 }
 
+.comment {
+    font-size: small;
+    font-weight: bold;
+    color: black;
+}
+
+.comment p {
+    font-weight: lighter;
+    color: rgb(83, 81, 81);
+}
+
 .comment-btns {
     display: flex;
     gap: 10px;
@@ -33,23 +44,10 @@ div.post {
     display: flex;
     gap: 5px;
     width: auto;
-    border: 1px solid black;
     padding: 5px;
     cursor: pointer;
 }
 
-.Like {
-    background-color: white;
-    color: black;
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    width: auto;
-    border: 1px solid black;
-    padding: 5px;
-    cursor: pointer;
-
-}
 
 .posts-btn svg {
     width: 20px;
@@ -62,13 +60,23 @@ div.post {
     display: flex;
     gap: 5px;
     width: auto;
-    border: 1px solid black;
     padding: 5px;
     cursor: pointer;
 }
 
 .like svg {
     width: 20px;
+    background-color: white;
+    color: black;
+    border: none;
+}
+
+.like svg.liked {
+    color: red;
+}
+
+.like-container {
+    display: flex;
 }
 
 .show-comments {
@@ -78,9 +86,12 @@ div.post {
     display: flex;
     gap: 5px;
     width: auto;
-    border: 1px solid black;
     padding: 5px;
     cursor: pointer;
+}
+
+.show-comments svg {
+    width: 20px;
 }
 
 .form {
@@ -90,6 +101,12 @@ div.post {
 .comment {
     border-bottom: 1px solid grey;
     padding: 10px;
+}
+
+.comment-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .comment a {
