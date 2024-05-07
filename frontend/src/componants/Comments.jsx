@@ -112,9 +112,8 @@ export default function Comment({ postId }) {
             </div>
 
             <div>
-
                 {
-                    showCommentForm && (
+                    userInfo.isLoggedIn && showCommentForm && (
                         <form className="form" onSubmit={createComment}>
                             <textarea
                                 type="content"

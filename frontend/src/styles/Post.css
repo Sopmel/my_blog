@@ -43,10 +43,10 @@ div.post {
     width: 20px;
 }
 
-/* 
-svg.liked {
-    stroke: red;
-} */
+
+.liked {
+    fill: red;
+}
 
 
 .form {
