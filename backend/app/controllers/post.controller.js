@@ -20,7 +20,7 @@ async function createPost(req, res) {
         let blurredSummary = summary.replace(/\b(ugly|diet)\b/gi, "****");
         let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
 
-        const authorId = res.locals.user._id;
+        const authorId = res.locals.user.id;
 
         const newPost = new Post({
             "title": blurredTitle,
