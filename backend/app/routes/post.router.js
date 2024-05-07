@@ -9,7 +9,7 @@ postsRouter.get('/', getPosts);
 postsRouter.get('/:id', showPost);
 postsRouter.put('/:id', checkUser, EditPost)
 postsRouter.delete('/:id', checkUser, deletePost)
-postsRouter.put('/like/:postId', likePost);
-postsRouter.put('/unlike/:postId', unlikePost);
+postsRouter.put('/:postId/like', checkUser, likePost);
+postsRouter.put('/:postId/unlike', checkUser, unlikePost);
 
 module.exports = postsRouter;

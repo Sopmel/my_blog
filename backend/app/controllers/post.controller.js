@@ -26,7 +26,8 @@ async function createPost(req, res) {
             "summary": blurredSummary,
             "content": blurredContent,
             "cover": newPath,
-            "author": authorId
+            "author": authorId,
+            "likes": []
         });
         console.log('newPost: ', newPost);
         const savedPost = new Post(newPost)
@@ -46,13 +47,17 @@ async function getPosts(req, res) {
         .sort({ createdAt: -1 })
         .limit(20);
 
+        const userId = res.locals.user ? res.locals.user._id : null;
+
         // Konvertera bilderna till data-URI
-        const postsWithImageDataURI = posts.map(post => {
+        const postsWithImageDataURI = await Promise.all(posts.map(async post => {
             const imageData = fs.readFileSync(post.cover);
             const imageBase64 = Buffer.from(imageData).toString('base64');
             const dataURI = `data:image/jpeg;base64,${imageBase64}`;
-            return { ...post.toObject(), cover: dataURI };
-        });
+
+            const hasLiked = post.likes.includes(userId);
+            return { ...post.toObject(), cover: dataURI, hasLiked };
+        }));
 
         res.status(200).json(postsWithImageDataURI);
     } catch (error) {
@@ -150,12 +155,14 @@ const likePost = async (req, res) => {
             console.log('Post not found');
             return res.status(404).json({ message: 'Post not found' });
         }
+        const userId = res.locals.user.id; // Användarens ID från autentisering
 
-        post.likes += 1;
-        await post.save();
-        console.log('post after saving:', post);
+        if (!post.likes.includes(userId)) {
+            post.likes.push(userId);
+            await post.save();
+        }
 
-        res.json({ likeCount: post.likes });
+        res.json({ likeCount: post.likes.length });
     } catch (error) {
         console.error('Error liking post:', error);
         res.status(500).json({ message: 'Error liking post' });
@@ -171,12 +178,15 @@ const unlikePost = async (req, res) => {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-        if (post.likes > 0) {
-            post.likes -= 1;
-        }
-        await post.save();
+        const userId = res.locals.user.id;
 
-        res.json({ likeCount: post.likes });
+        const index = post.likes.indexOf(userId);
+        if (index !== -1) {
+            post.likes.splice(index, 1);
+            await post.save();
+        }
+
+        res.json({ likeCount: post.likes.length });
     } catch (error) {
         console.error('Error unliking post:', error);
         res.status(500).json({ message: 'Error unliking post' });

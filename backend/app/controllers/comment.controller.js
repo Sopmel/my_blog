@@ -8,12 +8,14 @@ async function createComment(req, res) {
         const authorId = res.locals.user._id; // Get the author ID from the authenticated user
         console.log("backend", content, postId)
 
+        let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
+
         if( !content ) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
         const newComment = new Comment({
-            "content": content,
+            "content": blurredContent,
             "author": authorId,
             "post": postId
         });

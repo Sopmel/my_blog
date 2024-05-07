@@ -21,54 +21,33 @@ div.post {
 
 }
 
-.post-btns {
+.btns-container {
+    position: relative;
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-.posts-btn {
-    background-color: white;
-    color: black;
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    width: auto;
-    border: 1px solid black;
-    padding: 5px;
-    cursor: pointer;
+.like-container {
+    position: absolute;
+    right: 0;
+
 }
 
 .posts-btn svg {
     width: 20px;
 }
 
-.like {
-    background-color: white;
-    color: black;
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    width: auto;
-    border: 1px solid black;
-    padding: 5px;
-    cursor: pointer;
-}
 
 .like svg {
     width: 20px;
 }
 
-.show-comments {
-    background-color: white;
-    color: black;
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    width: auto;
-    border: 1px solid black;
-    padding: 5px;
-    cursor: pointer;
-}
+/* 
+svg.liked {
+    stroke: red;
+} */
+
 
 .form {
     margin-top: 20px;
