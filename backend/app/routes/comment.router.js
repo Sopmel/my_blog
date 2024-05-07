@@ -4,7 +4,7 @@ const { checkUser, authenticateUser } = require('../middlewares/auth.middleware'
 
 const commentRouter = Router();
 
-commentRouter.post('/posts/:postId', checkUser, createComment);
+commentRouter.post('/posts/:postId', checkUser, authenticateUser, createComment);
 commentRouter.get('/posts/:postId', getComments);
 commentRouter.delete('/:commentId', deleteComment);
 
