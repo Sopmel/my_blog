@@ -1,4 +1,5 @@
 const Post = require('../models/post.model');
+const User = require('../models/user.model');
 const fs = require('fs');
 
 async function createPost(req, res) {
@@ -157,6 +158,11 @@ const likePost = async (req, res) => {
         }
         const userId = res.locals.user.id; // Användarens ID från autentisering
 
+        // Kontrollera om post.likes är undefined
+        if (post.likes === undefined) {
+            post.likes = []; // Skapa en tom array för likes om den är undefined
+        }
+
         if (!post.likes.includes(userId)) {
             post.likes.push(userId);
             await post.save();
@@ -169,6 +175,7 @@ const likePost = async (req, res) => {
     }
 };
 
+
 const unlikePost = async (req, res) => {
     try {
         const postId = req.params.postId;
@@ -180,10 +187,13 @@ const unlikePost = async (req, res) => {
 
         const userId = res.locals.user.id;
 
-        const index = post.likes.indexOf(userId);
-        if (index !== -1) {
-            post.likes.splice(index, 1);
-            await post.save();
+        // Kontrollera om post.likes är definierad innan vi använder indexOf
+        if (post.likes && Array.isArray(post.likes)) {
+            const index = post.likes.indexOf(userId);
+            if (index !== -1) {
+                post.likes.splice(index, 1);
+                await post.save();
+            }
         }
 
         res.json({ likeCount: post.likes.length });
@@ -192,6 +202,7 @@ const unlikePost = async (req, res) => {
         res.status(500).json({ message: 'Error unliking post' });
     }
 };
+
 
 
 module.exports = {

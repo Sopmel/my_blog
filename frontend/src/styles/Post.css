@@ -29,8 +29,7 @@ div.post {
 }
 
 .like-container {
-    position: absolute;
-    right: 0;
+    position: relative;
 
 }
 
