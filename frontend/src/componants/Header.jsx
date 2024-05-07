@@ -7,7 +7,7 @@ export default function Header() {
     console.log("header userinfo:", userInfo)
 
     useEffect(() => {
-        fetch('http://localhost:3000/user/profile', {
+        fetch('https://my-blog-frontend-nepw.onrender.com/user/profile', {
             credentials: 'include',
         }).then(response => {
             response.json().then(userInfo => {
@@ -18,7 +18,7 @@ export default function Header() {
 
     async function logout() {
         try {
-            await fetch('http://localhost:3000/user/logout', {
+            await fetch('https://my-blog-frontend-nepw.onrender.com/user/logout', {
                 method: 'POST',
                 credentials: 'include', // Include credentials
             });

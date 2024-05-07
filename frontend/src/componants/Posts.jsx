@@ -28,7 +28,7 @@ export default function Post({ _id, post }) {
 
     const handleLike = async () => {
         try {
-            const response = await axios.put(`http://localhost:3000/post/${_id}/${liked ? 'unlike' : 'like'}`, {}, { withCredentials: true });
+            const response = await axios.put(`https://my-blog-frontend-nepw.onrender.com/post/${_id}/${liked ? 'unlike' : 'like'}`, {}, { withCredentials: true });
             setLikeCount(response.data.likeCount);
             setLiked(!liked);
 
