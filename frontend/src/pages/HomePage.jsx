@@ -8,7 +8,7 @@ const HomePage = () => {
 
     useEffect(() => {
         console.log('Fetching posts...');
-        fetch('https://my-blog-frontend-nepw.onrender.com/post', {
+        fetch('http://localhost:3000/post', {
             headers: {
                 'Authorization': `Bearer ${userInfo.token}`,
             },

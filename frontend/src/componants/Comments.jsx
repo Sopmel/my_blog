@@ -22,7 +22,7 @@ export default function Comment({ postId }) {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`https://my-blog-frontend-nepw.onrender.com/comments/posts/${postId}`, { withCredentials: true });
+            const response = await axios.get(`http://localhost:3000/comments/posts/${postId}`, { withCredentials: true });
             setComments(response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -34,7 +34,7 @@ export default function Comment({ postId }) {
 
         try {
             const response = await axios.post(
-                `https://my-blog-frontend-nepw.onrender.com/comments/posts/${postId}`,
+                `http://localhost:3000/comments/posts/${postId}`,
                 { content },
                 { withCredentials: true }
             );
@@ -60,7 +60,7 @@ export default function Comment({ postId }) {
 
     const deleteComment = async (commentId) => {
         try {
-            const res = await fetch(`https://my-blog-frontend-nepw.onrender.com/comments/${commentId}`, {
+            const res = await fetch(`http://localhost:3000/comments/${commentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export default function Comment({ postId }) {
 
     const handleLike = async () => {
         try {
-            const response = await axios.put(`https://my-blog-frontend-nepw.onrender.com/post/${postId}/like`, {}, { withCredentials: true });
+            const response = await axios.put(`http://localhost:3000/post/${postId}/like`, {}, { withCredentials: true });
             setLikeCount(response.data.likeCount);
             setUnLiked(!unLiked);
         } catch (error) {

@@ -23,7 +23,7 @@ export default function ProfilePage() {
 
 
     const fetchUserProfile = () => {
-        axios.get(`https://my-blog-frontend-nepw.onrender.com/user/profilepage/${id}`, { withCredentials: true })
+        axios.get(`http://localhost:3000/user/profilepage/${id}`, { withCredentials: true })
             .then(response => {
                 setProfile(response.data);
                 console.log("res from pp: ", response.data)
@@ -39,7 +39,7 @@ export default function ProfilePage() {
     };
 
     const fetchUserPosts = () => {
-        axios.get(`https://my-blog-frontend-nepw.onrender.com/user/posts/${id}`,)
+        axios.get(`http://localhost:3000/user/posts/${id}`,)
             .then(response => {
                 setUserPosts(response.data);
                 console.log(response.data)

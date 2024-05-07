@@ -11,7 +11,7 @@ export default function EditPost() {
     const [redirect, setRedirect] = useState('');
 
     useEffect(() => {
-        fetch('https://my-blog-frontend-nepw.onrender.com/post/' + id)
+        fetch('http://localhost:3000/post/' + id)
             .then(response => {
                 response.json().then(postInfo => {
                     setTitle(postInfo.title)
@@ -36,7 +36,7 @@ export default function EditPost() {
         console.log(data)
 
 
-        const response = await fetch(`https://my-blog-frontend-nepw.onrender.com/post/${id}`, {
+        const response = await fetch(`http://localhost:3000/post/${id}`, {
             method: 'PUT',
             credentials: 'include',
             body: data,

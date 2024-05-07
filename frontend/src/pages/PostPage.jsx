@@ -9,7 +9,7 @@ export default function PostPage() {
     const { userInfo } = useContext(UserContext);
 
     useEffect(() => {
-        fetch(`https://my-blog-frontend-nepw.onrender.com/post/${id}`)
+        fetch(`http://localhost:3000/post/${id}`)
             .then(response => {
                 response.json().then(postInfo => {
                     setPostInfo(postInfo);
@@ -25,7 +25,7 @@ export default function PostPage() {
 
     const deletePost = async () => {
         try {
-            const res = await fetch(`https://my-blog-frontend-nepw.onrender.com/post/${id}`, {
+            const res = await fetch(`http://localhost:3000/post/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

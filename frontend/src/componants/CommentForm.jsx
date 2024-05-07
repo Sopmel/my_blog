@@ -6,7 +6,7 @@ export default function CommentForm({ postId, onCommentAdd }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`https://my-blog-frontend-nepw.onrender.com/posts/${postId}/comments`, {
+            const response = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

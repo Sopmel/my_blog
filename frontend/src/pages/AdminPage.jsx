@@ -13,7 +13,7 @@ export default function AdminPage() {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('https://my-blog-frontend-nepw.onrender.com/user/userlist');
+            const response = await axios.get('http://localhost:3000/user/userlist');
             setUsers(response.data);
             console.log("res-data:", response.data);
             setShowUsers(false);
@@ -30,7 +30,7 @@ export default function AdminPage() {
 
     const deleteUser = async (userId) => {
         try {
-            await axios.delete(`https://my-blog-frontend-nepw.onrender.com/user/${userId}`);
+            await axios.delete(`http://localhost:3000/user/${userId}`);
             fetchUsers();
             alert('User deleted');
         } catch (error) {
@@ -41,7 +41,7 @@ export default function AdminPage() {
     const upgradeUser = async (userId) => {
         try {
             console.log('Upgrading user with ID:', userId);
-            await axios.put(`https://my-blog-frontend-nepw.onrender.com/user/upgrade/${userId}`, { isAdmin: true }, { withCredentials: true });
+            await axios.put(`http://localhost:3000/user/upgrade/${userId}`, { isAdmin: true }, { withCredentials: true });
             fetchUsers();
             alert('User upgraded to admin');
         } catch (error) {
@@ -53,7 +53,7 @@ export default function AdminPage() {
     const downgradeUser = async (userId) => {
         try {
             console.log('Downgrading user with ID:', userId);
-            await axios.put(`https://my-blog-frontend-nepw.onrender.com/user/downgrade/${userId}`, { isAdmin: false }, { withCredentials: true });
+            await axios.put(`http://localhost:3000/user/downgrade/${userId}`, { isAdmin: false }, { withCredentials: true });
             fetchUsers();
             alert('User downgraded from admin');
         } catch (error) {
