@@ -18,12 +18,22 @@ export default function Post({ _id, post }) {
     }, [userInfo, _id]);
 
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('userInfo');
-        if (storedUserInfo) {
-            const parsedUserInfo = JSON.parse(storedUserInfo);
-            setUserInfo(parsedUserInfo);
-        }
-    }, []);
+        const handleStorageChange = () => {
+            const storedUserInfo = localStorage.getItem('userInfo');
+            if (storedUserInfo) {
+                const parsedUserInfo = JSON.parse(storedUserInfo);
+                setUserInfo(parsedUserInfo);
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    },
+
+        [setUserInfo]);
 
 
     const handleLike = async () => {
