@@ -21,7 +21,7 @@ function CreatePost() {
         data.set('file', files[0]);
 
         try {
-            const response = await axiosRequest.post('/post', data, {
+            const response = await axios.post('http://localhost:3000/post', data, {
                 withCredentials: true
             });
 
