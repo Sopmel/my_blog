@@ -1,4 +1,3 @@
-// api.js
 import axios from 'axios';
 
 const backendURL = process.env.NODE_ENV === 'production' ? 'https://my-blog-h7wn.onrender.com' : 'http://localhost:3000';
