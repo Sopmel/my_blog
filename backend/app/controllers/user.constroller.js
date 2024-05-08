@@ -79,6 +79,7 @@ async function loginUser(req, res) {
                 return res.status(500).json({ message: 'Internal server error' });
             }
             console.log('JWT token generated successfully for user:', username);
+            console.log('Token cookie:', token);
             res.cookie('token', token, {secure:true, sameSite:'none'}).json({
                 id: userDoc._id,
                 username,
