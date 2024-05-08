@@ -79,15 +79,7 @@ async function loginUser(req, res) {
                 return res.status(500).json({ message: 'Internal server error' });
             }
             console.log('JWT token generated successfully for user:', username);
-
-            // Inställningar för cookien
-            const cookieOptions = {
-                secure: true, // Skicka endast cookie över HTTPS
-                httpOnly: true // Förhindra JavaScript-åtkomst till cookie
-            };
-
-            // Sätt cookien och skicka svar till klienten
-            res.cookie('token', token, cookieOptions).json({
+            res.cookie('token', token, {secure:true, sameSite:'none'}).json({
                 id: userDoc._id,
                 username,
                 isAdmin: isAdmin // Skicka med isAdmin
@@ -98,8 +90,6 @@ async function loginUser(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-
 
 async function logoutUser(req, res) {
     try {
