@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 app.use(
     cors({
-        origin: ['https://my-blog-frontend-nepw.onrender.com', 'http://localhost:5173'],
+        origin: ['https://my-blog-frontend-nepw.onrender.com', 'http://localhost:5173', 'https://my-blog-h7wn.onrender.com', 'http://localhost:3000'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true
     })
