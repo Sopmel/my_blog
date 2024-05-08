@@ -1,41 +1,48 @@
+import React, { useState } from "react";
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from "react-router-dom";
 import Editor from "../Editor";
 import { axiosRequest } from '../../config';
 
-async function createNewPost(ev) {
-    ev.preventDefault();
+function CreatePost() {
+    const [title, setTitle] = useState('');
+    const [summary, setSummary] = useState('');
+    const [content, setContent] = useState('');
+    const [files, setFiles] = useState('');
+    const [redirect, setRedirect] = useState(false);
 
-    const data = new FormData();
-    data.set('title', title);
-    data.set('summary', summary);
-    data.set('content', content);
-    data.set('file', files[0]);
+    async function handleCreatePost(ev) {
+        ev.preventDefault();
 
-    try {
-        const response = await axiosRequest.post('/post', data, {
-            withCredentials: true
-        });
+        const data = new FormData();
+        data.set('title', title);
+        data.set('summary', summary);
+        data.set('content', content);
+        data.set('file', files[0]);
 
-        if (response.status === 200) {
-            setRedirect(true);
-        } else if (response.status === 400) {
+        try {
+            const response = await axiosRequest.post('/post', data, {
+                withCredentials: true
+            });
 
-            alert('Missing fields');
-        } else {
-            // Hantera andra felstatuskoder här
-            console.error('Server error:', response.status);
+            if (response.status === 201) {
+                setRedirect(true);
+            } else if (response.status === 400) {
+                alert('Missing fields');
+            } else {
+                console.error('Server error:', response.status);
+            }
+        } catch (error) {
+            console.error('Axios request error:', error);
         }
-    } catch (error) {
-        console.error('Axios request error:', error);
     }
-
 
     if (redirect) {
         return <Navigate to={'/'} />
     }
+
     return (
-        <form onSubmit={createNewPost}>
+        <form onSubmit={handleCreatePost}>
             <input type="title"
                 placeholder={'Title'}
                 value={title}
@@ -54,3 +61,5 @@ async function createNewPost(ev) {
         </form>
     );
 }
+
+export default CreatePost;
