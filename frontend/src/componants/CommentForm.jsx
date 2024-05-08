@@ -19,8 +19,8 @@ export default function CommentForm({ postId, onCommentAdd }) {
             }
 
             const newComment = await response.json();
-            onCommentAdd(newComment); // Add new comment to state
-            setContent(''); // Clear textarea
+            onCommentAdd(newComment);
+            setContent('');
         } catch (error) {
             console.error('Error submitting comment:', error);
         }

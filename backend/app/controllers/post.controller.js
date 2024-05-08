@@ -1,5 +1,4 @@
 const Post = require('../models/post.model');
-const User = require('../models/user.model');
 const fs = require('fs');
 
 async function createPost(req, res) {
@@ -16,9 +15,9 @@ async function createPost(req, res) {
             return res.status(400).json({message: 'Missing required fields'})
         }
 
-        let blurredTitle = title.replace(/\b(ugly|diet)\b/gi, "****");
-        let blurredSummary = summary.replace(/\b(ugly|diet)\b/gi, "****");
-        let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
+        let blurredTitle = title.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
+        let blurredSummary = summary.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
+        let blurredContent = content.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
 
         const authorId = res.locals.user.id;
 
@@ -95,9 +94,9 @@ async function EditPost(req, res) {
 
     const { id, title, summary, content } = req.body;
 
-    let blurredTitle = title.replace(/\b(ugly|diet)\b/gi, "****");
-    let blurredSummary = summary.replace(/\b(ugly|diet)\b/gi, "****");
-    let blurredContent = content.replace(/\b(ugly|diet)\b/gi, "****");
+    let blurredTitle = title.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
+    let blurredSummary = summary.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
+    let blurredContent = content.replace(/\b(shit|ugly|diet|carrot)\b/gi, "****");
 
     if (req.file) {
         const { originalname, path } = req.file;
@@ -158,9 +157,8 @@ const likePost = async (req, res) => {
         }
         const userId = res.locals.user.id; // Användarens ID från autentisering
 
-        // Kontrollera om post.likes är undefined
         if (post.likes === undefined) {
-            post.likes = []; // Skapa en tom array för likes om den är undefined
+            post.likes = []; 
         }
 
         if (!post.likes.includes(userId)) {
@@ -187,7 +185,6 @@ const unlikePost = async (req, res) => {
 
         const userId = res.locals.user.id;
 
-        // Kontrollera om post.likes är definierad innan vi använder indexOf
         if (post.likes && Array.isArray(post.likes)) {
             const index = post.likes.indexOf(userId);
             if (index !== -1) {

@@ -1,4 +1,4 @@
-const Post = require('../models/post.model');
+//const Post = require('../models/post.model');
 
 async function createComment(req, res) {
     try {

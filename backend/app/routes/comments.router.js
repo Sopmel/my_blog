@@ -1,10 +1,10 @@
-const { Router } = require('express');
-const { createComment } = require('../controllers/comments.controller');
-const { authenticateUser, checkUser } = require('../middlewares/auth.middleware');
+// const { Router } = require('express');
+// const { createComment } = require('../controllers/comments.controller');
+// const { authenticateUser, checkUser } = require('../middlewares/auth.middleware');
 
-const commentsRouter = Router();
+// const commentsRouter = Router();
 
-commentsRouter.post('/posts/:postId/comments',checkUser, createComment);
+// commentsRouter.post('/posts/:postId/comments',checkUser, createComment);
 
 
-module.exports = commentsRouter;
+// module.exports = commentsRouter;

@@ -20,7 +20,7 @@ export default function Header() {
         try {
             await fetch('http://localhost:3000/user/logout', {
                 method: 'POST',
-                credentials: 'include', // Include credentials
+                credentials: 'include',
             });
             setUserInfo({});
             window.location.href = "/login"

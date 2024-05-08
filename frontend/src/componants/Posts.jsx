@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 import Comment from '../componants/Comments';
-import { fetchData, axiosRequest } from '../../config';
 import '../styles/Post.css';
 
 export default function Post({ _id, post }) {
@@ -13,7 +12,6 @@ export default function Post({ _id, post }) {
 
     useEffect(() => {
         if (userInfo) {
-            // Uppdatera liked-tillståndet baserat på användarinformationen
             setLiked(userInfo.likedPosts.includes(_id));
         }
     }, [userInfo, _id]);
@@ -39,12 +37,16 @@ export default function Post({ _id, post }) {
 
     const handleLike = async () => {
         try {
+            console.log("userInfo", userInfo)
+            if (!userInfo || !userInfo.isLoggedIn) {
+                console.log('Användaren är inte inloggad!');
+                return;
+            }
 
-            const response = await axiosRequest.put(`/post/${_id}/${liked ? 'unlike' : 'like'}`, {});
+            const response = await axios.put(`http://localhost:3000/post/${_id}/${liked ? 'unlike' : 'like'}`, {}, { withCredentials: true });
             setLikeCount(response.data.likeCount);
             setLiked(!liked);
 
-            // Uppdatera användarens likedPosts-array beroende på om användaren gillar eller ogillar inlägget
             const updatedUserInfo = { ...userInfo };
             if (!liked) {
                 updatedUserInfo.likedPosts.push(_id);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from "react-router-dom";
 import Editor from "../Editor";
-import { axiosRequest } from '../../config';
+import axios from "axios";
 
 function CreatePost() {
     const [title, setTitle] = useState('');

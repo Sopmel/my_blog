@@ -74,7 +74,6 @@ export default function AdminPage() {
 
             {showUsers && (
                 <div>
-                    {/* Loopa igenom varje användare och rendera en länk för varje användare */}
                     {users.map(user => (
                         <div className="user" key={user._id}>
                             <div className='username'>

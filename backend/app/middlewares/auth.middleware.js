@@ -7,16 +7,13 @@ const secret = 'jlsjsljäöspkd3ejjlkwe'
 async function authenticateUser(req, res, next) {
     const { token } = req.cookies;
     if (!token) {
-        // If there's no token, send an error response
         return res.status(401).json({ error: 'No token provided' });
     }
     jwt.verify(token, secret, {}, (err, info) => {
         if (err) {
-            // Om det uppstår ett fel, skicka en felrespons till klienten
             res.status(500).json({ error: 'Authentication failed' });
             next(err);
         } else {
-            // Om verifieringen lyckas, skicka användarinformationen till klienten
             info.token = token;
             console.log("auth success");
             res.json(info);

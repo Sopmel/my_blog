@@ -64,7 +64,6 @@ async function loginUser(req, res) {
 
         console.log('Password correct for user:', username);
 
-        // Om användaren är en administratör
         let isAdmin = false;
         if (userDoc.isAdmin) {
             isAdmin = true;
@@ -79,11 +78,10 @@ async function loginUser(req, res) {
                 return res.status(500).json({ message: 'Internal server error' });
             }
             console.log('JWT token generated successfully for user:', username);
-            console.log('Token cookie:', token);
-            res.cookie('token', token, {secure:true, sameSite:'none'}).json({
+            res.cookie('token', token).json({
                 id: userDoc._id,
                 username,
-                isAdmin: isAdmin // Skicka med isAdmin
+                isAdmin: isAdmin
             });
         });
     } catch (error) {
@@ -109,7 +107,7 @@ async function logoutUser(req, res) {
         console.log('Logout success response sent');
     } catch (error) {
         console.log('Error during logout:', error);
-        // Only send this if a response hasn't been sent yet
+       
         if (!res.headersSent) {
             res.status(500).json({ message: 'Internal server error' });
         }
