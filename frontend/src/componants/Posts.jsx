@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 import Comment from '../componants/Comments';
+import { fetchData, axiosRequest } from '../../config';
 import '../styles/Post.css';
 
 export default function Post({ _id, post }) {
@@ -38,9 +39,8 @@ export default function Post({ _id, post }) {
 
     const handleLike = async () => {
         try {
-            const backendURL = app.get('backendURL');
 
-            const response = await axios.put(`${backendURL}/post/${_id}/${liked ? 'unlike' : 'like'}`, {}, { withCredentials: true });
+            const response = await axiosRequest.put(`/post/${_id}/${liked ? 'unlike' : 'like'}`, {});
             setLikeCount(response.data.likeCount);
             setLiked(!liked);
 
